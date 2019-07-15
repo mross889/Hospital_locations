@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    
+<meta charset="utf-8">
+    
+<title>hospital</title> <!--Title for the tab of website-->
+<style>
+        html, body, #viewDiv {
+            width: 100%;
+            height: 100%; 
+            margin: 0;
+            padding: 0;
+            } 
+        /*The accordian pane style*/
+        #pane2{
+            width:20%; 
+            height:100%;
+            margin:5px; 
+            background-color: rgb(0, 0, 0);
+            color: white;
+            overflow: scroll;
+            
+            }
+        /*This is for the results on the stats query*/
+        #chartPanel {
+        background: rgb(255, 255, 255);
+        font: "Avenir Next W00";
+        line-height: 1.5em;
+        overflow: auto;
+        
+      }
+
+      .chart {
+        height: 300px;
+      }
+      /*This is for the query specific*/
+      #optionsDiv1 {
+        background-color:#6D0F0F ;
+        color: white;
+        padding: 10px;
+        width: 250px;
+      }
+
+      .esri-popup .esri-popup-header .esri-title {
+        font-size: 18px;
+        font-weight: bolder;
+      }
+
+      .esri-popup .esri-popup-body .esri-popup-content {
+        font-size: 14px;
+      }
+        
+</style>   
+	
+
+<link rel="stylesheet" href="http://js.arcgis.com/4.11/esri/themes/dark-blue/main.css"/>
+
+<!--cdn for chart.js-->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script src="http://js.arcgis.com/4.10/"></script>
+
+<!--reference the javascript for statistics spatial query-->
+<script src="querttest.js"></script>
+<script src="query.js"></script>
+
+
+
+
+<script>
+	require(["dojo/parser", 
+    "dijit/layout/BorderContainer", 
+    "dijit/layout/ContentPane",
+    "dijit/layout/AccordionContainer",
+    "dijit/layout/AccordionPane",
+    "dojo/domReady!" ],
+    function(parser) {
+        parser.parse();
+      });
+ 
+     
+</script>
+</head>
+
+<body class="claro">
+    
+
+<div id="bordercontainer" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, liveSplitters:false" style="width:100%; height:100%;background-color: rgb(0, 0, 0)">
+
+  <div id="pane1" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'"style='height:10%; padding-bottom:5;padding-top: 15px ;padding-left: 10px; font-size: 45px; color: rgb(255,255,255); background-color: rgb(88, 5, 5)'>
+    Global Hospital Locator 
+  </div>
+
+  <div id= "pane2" data-dojo-type="dijit/layout/AccordionContainer" data-dojo-props="region:'left'">
+    
+    <div id="Accpane1" data-dojo-type="dijit/layout/AccordionPane" data-dojo-props="title: 'ABOUT', splitter: true" style ="background-color: rgb(88, 5, 5);padding:10px; color:white;">   
+    <div> 
+      
+      <h1>Why was this web-Applicationed developed?</h1>
+      <p1>This web-application is designed to help find the nearest hospital within your proiximity, and
+      allowing to users to search for the nearest healthcare facilities database to support emergency response, operational planning, 
+      and humanitarian assistance worldwide. 
+      
+      <h2>What makes this application possible?</h2>
+      <p2>The evolution of GIS technologies has created a unique, cross-disciplinary opportunity to create such web-application on
+      a common data platform that allows for the contribution of organiztions the ability to access accurate, timely, and publicly
+      available data with no associated cost to the user.</p2>
+   
+    </div>
+
+  </div>
+
+     <div id="Accpane2" data-dojo-type="dijit/layout/AccordionPane" data-dojo-props="title: 'SPATIAL QUERY'" style ="background-color: rgb(88, 5, 5); color:white">
+      
+      <div>
+        
+        <h1>Spatial Query Information </h1>
+        
+        <p1> The user will then be able to use the provide on the fly query tool to help the user know the 
+          total bed count and how many beds are occupied for the hospital nearest them. If the user hovers over 
+          multiple hospital the tool will give a total for all hospitals within the cirle. <p1>
+      
+           
+            
+        <p2> If a user wants to choose specific fields that they would want filter then they can by using the options tool 
+          located on the sidebar under graphs. </p2>
+        
+        
+        <h2>This chart  dispalys the results from the on the fly spatial query.</h2>
+        <p3>* chart results dont display until hospital are show on map. </p3>
+        
+        </div>
+
+
+          <div id="chartPanel"><canvas id="chart" class="chart"></canvas></div>
+      
+     </div>
+    
+
+  <div id="Accpane3" data-dojo-type="dijit/layout/AccordionPane" data-dojo-props="title: 'SPECIFIC QUERY'" style ="background-color: rgb(88, 5, 5);color: white; height: 4px">
+   
+    <h1>Choose what you want to filter</h1>
+    <p1>Selecet attributtes that you want to filter for and enter the number below
+    to find the results press Do Query button.</p1>
+
+    <div class="esri-widget" id="optionsDiv">
+      <h2>Global Hospital Locator</h2>
+      <select class="esri-widget" id="attSelect">
+        <option value="Hosp_beds">Bed Count</option>
+        <option value="Occupency" selected>Beds Occupied</option>
+        <option value="Heli_pad" selected>Helicopter Access</option>
+        <option value="Trauma_Level" selected>Hospital Trauma Level</option>
+      
+      </select>
+      <select class="esri-widget" id="signSelect">
+        <option value=">">is greater than</option>
+        <option value="<">is less than</option>
+        <option value="=">is equal to</option>
+      </select>
+       <input class="esri-widget" id="valSelect" type='number' max='100'>
+       </input>
+      <br />
+      <br />
+      <button class="esri-widget" id="doBtn">Do Query</button> <br />
+      <p><span id="printResults"></span></p>
+    </div>
+      
+  </div>
+    
+
+     <div id="Accpane4" data-dojo-type="dijit/layout/AccordionPane" data-dojo-props="title: 'CONTACT'" style ="background-color: rgb(88, 5, 5);color:white">
+    For more Information you can contact Seth Waife at his
+    email: swiafe@llu.edu
+    </div>
+    </div>
+
+
+  <div id="viewDiv1" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'"></div>
+  <div id="viewDiv" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'"> </div>
+  
+
+</div>
+
+</body>
+</html>
